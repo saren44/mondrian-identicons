@@ -23,6 +23,14 @@ export default function Home() {
     
   }, [name])
 
+  const validate = useMemo(() => {
+    const accepted = /^[A-Za-z0-9_-]+$/
+    if (name === "" || name.match(accepted)) {
+      return true
+    }
+    return false
+  }, [name])
+
   const handleClickCopyButton = () => {
     navigator.clipboard.writeText(buildImageUrl); 
     setTextCopied(true)
@@ -63,32 +71,35 @@ export default function Home() {
       </p>
       </header>
       <main className="flex flex-col gap-8 row-start-2 items-center">
-        {!imgLoaded && 
-          <Skeleton.Node style={{width: 128}} active> 
+        {(!imgLoaded || !validate) && 
+          <Skeleton.Node style={{width: 128, height: 128}} active> 
             <LoadingOutlined spin style={{color: '#bfbfbf'}}/>
           </Skeleton.Node>
         }
-        {isClient && <img src={buildImageUrl} width={imgLoaded ? 128 : 0} alt="" onLoad={() => setImgLoaded(true)}/> }
+        {(isClient && validate) && <img src={buildImageUrl} width={imgLoaded ? 128 : 0} alt="" onLoad={() => setImgLoaded(true)}/> }
           <Space>
-            <code className="w-auto select-text">
-              {(isClient) ? `<img \n\tsrc="${buildImageUrl}"\n/>` : '<img \n\tsrc=""\n/>'}
+            <code className={`w-auto select-text ${!validate && 'text-red-500'}`}>
+              {(isClient) ? (validate) ? `<img \n\tsrc="${buildImageUrl}"\n/>` : 'Only letters, numbers, - and _ are accepted' : '<img \n\tsrc=""\n/>'}
             </code>
             <Button 
               icon={textCopied ? <CheckOutlined/> : <CopyOutlined />} 
               shape='default' 
               className="ml-4"
               onClick={handleClickCopyButton}
+              disabled={!validate}
             />
           </Space>
 
           <p> Edit text below and see your name Mondrianized! </p>
           <Input.Search 
-            value={name} 
+            status={!validate ? "error" : ""}
+            value={name}
             onChange={e => setname(e.target.value)} 
             className="w-80"
             maxLength={35} 
             onSearch={getRandomName}
             enterButton={<Button icon={<ReloadOutlined />}/>}
+            
           />
           
       </main>
