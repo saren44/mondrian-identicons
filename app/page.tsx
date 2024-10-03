@@ -1,14 +1,16 @@
 'use client'
 
 import { names } from "@/const/names";
-import { CheckOutlined, CopyOutlined, ReloadOutlined } from "@ant-design/icons";
-import { Button, ConfigProvider, Input, Space } from "antd";
-import { useEffect, useMemo, useState } from "react";
+import { CheckOutlined, CopyOutlined, LoadingOutlined, ReloadOutlined } from "@ant-design/icons";
+import { Button, ConfigProvider, Input, Skeleton, Space } from "antd";
+import SkeletonImage from "antd/es/skeleton/Image";
+import { Suspense, useEffect, useMemo, useState } from "react";
 
 export default function Home() {
   const [name, setname] = useState('Johnny')
   const [textCopied, setTextCopied] = useState(false)
   const [isClient, setIsClient] = useState(false)
+  const [imgLoaded, setImgLoaded] = useState(false)
 
   const getRandomName = () => {
     setname(names[Math.floor(Math.random() * names.length)])
@@ -31,6 +33,7 @@ export default function Home() {
   useEffect(() => {
     setTextCopied(false)
     setIsClient(true)
+    setImgLoaded(false)
   }, [name])
 
   return (
@@ -61,10 +64,15 @@ export default function Home() {
       </p>
       </header>
       <main className="flex flex-col gap-8 row-start-2 items-center">
-          { isClient && <img src={buildImageUrl} width={128} height={128} alt="icon"/> }
+        {!imgLoaded && 
+          <Skeleton.Node style={{width: 128}} active> 
+            <LoadingOutlined spin className="text-white"/>
+          </Skeleton.Node>
+        }
+        {isClient && <img src={buildImageUrl} width={imgLoaded ? 128 : 0} alt="" onLoad={() => setImgLoaded(true)}/> }
           <Space>
             <code className="w-auto select-text">
-              {isClient ? `<img \n\tsrc="${buildImageUrl}"\n/>` : '<img \n\tsrc=""\n/>'}
+              {(isClient) ? `<img \n\tsrc="${buildImageUrl}"\n/>` : '<img \n\tsrc=""\n/>'}
             </code>
             <Button 
               icon={textCopied ? <CheckOutlined/> : <CopyOutlined />} 
