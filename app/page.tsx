@@ -66,7 +66,7 @@ export default function Home() {
       <main className="flex flex-col gap-8 row-start-2 items-center">
         {!imgLoaded && 
           <Skeleton.Node style={{width: 128}} active> 
-            <LoadingOutlined spin className="text-white"/>
+            <LoadingOutlined spin style={{color: '#bfbfbf'}}/>
           </Skeleton.Node>
         }
         {isClient && <img src={buildImageUrl} width={imgLoaded ? 128 : 0} alt="" onLoad={() => setImgLoaded(true)}/> }
