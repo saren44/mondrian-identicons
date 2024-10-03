@@ -3,23 +3,34 @@
 import { names } from "@/const/names";
 import { CheckOutlined, CopyOutlined, ReloadOutlined } from "@ant-design/icons";
 import { Button, ConfigProvider, Input, Space } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function Home() {
   const [name, setname] = useState('Johnny')
   const [textCopied, setTextCopied] = useState(false)
+  const [isClient, setIsClient] = useState(false)
 
   const getRandomName = () => {
     setname(names[Math.floor(Math.random() * names.length)])
   }
 
+  const buildImageUrl = useMemo(() => {
+    if (typeof window !== "undefined") {
+      return `${window.location}api/${name}`
+    }
+    return ''
+    
+  }, [name])
+
   const handleClickCopyButton = () => {
-    navigator.clipboard.writeText(`${window.location}api/${name}`); 
+    navigator.clipboard.writeText(buildImageUrl); 
     setTextCopied(true)
+
   }
 
   useEffect(() => {
     setTextCopied(false)
+    setIsClient(true)
   }, [name])
 
   return (
@@ -50,10 +61,10 @@ export default function Home() {
       </p>
       </header>
       <main className="flex flex-col gap-8 row-start-2 items-center">
-          <img src={`${window.location}api/${name}`} width={128} height={128} alt="icon"/>
+          { isClient && <img src={buildImageUrl} width={128} height={128} alt="icon"/> }
           <Space>
             <code className="w-auto select-text">
-              {`<img \n\tsrc="${window.location}api/${name}"\n/>`}
+              {isClient ? `<img \n\tsrc="${buildImageUrl}"\n/>` : '<img \n\tsrc=""\n/>'}
             </code>
             <Button 
               icon={textCopied ? <CheckOutlined/> : <CopyOutlined />} 
