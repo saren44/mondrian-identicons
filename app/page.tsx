@@ -1,12 +1,9 @@
 'use client'
 
 import { names } from "@/const/names";
-import { CheckOutlined, CopyOutlined, LoadingOutlined, ReloadOutlined, RetweetOutlined } from "@ant-design/icons";
-import { Button, ConfigProvider, Input, Modal, Space } from "antd";
-import Paragraph from "antd/es/typography/Paragraph";
-import Title from "antd/es/typography/Title";
-import Image from "next/image";
-import { Suspense, useCallback, useEffect, useState } from "react";
+import { CheckOutlined, CopyOutlined, ReloadOutlined } from "@ant-design/icons";
+import { Button, ConfigProvider, Input, Space } from "antd";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const [name, setname] = useState('Johnny')
@@ -42,10 +39,10 @@ export default function Home() {
         <p> A weird cross-over between 
           {" "}
           <a href="https://en.wikipedia.org/wiki/Piet_Mondrian" target="_blank" className="underline"> 
-            Piet Mondrian's style
+            {"Piet Mondrian's style"}
           </a>
           {" "}
-          and 
+          and
           {" "}
           <a href="https://en.wikipedia.org/wiki/Identicon" target="_blank" className="underline"> 
             identicons 
@@ -53,9 +50,7 @@ export default function Home() {
       </p>
       </header>
       <main className="flex flex-col gap-8 row-start-2 items-center">
-        <Suspense fallback={<LoadingOutlined spin/>}>
-          <img src={`${window.location}api/${name}`} width={128}/>
-        </Suspense> 
+          <img src={`${window.location}api/${name}`} width={128} height={128} alt="icon"/>
           <Space>
             <code className="w-auto select-text">
               {`<img \n\tsrc="${window.location}api/${name}"\n/>`}

@@ -1,13 +1,10 @@
-import Image from "image-js";
-import { sha512 } from "js-sha512";
-import type { NextApiRequest, NextApiResponse } from "next";
+
 import { NextRequest, NextResponse } from "next/server";
-import { generateIdenticon } from "./generate";
 import { Identicon } from "./identicon";
 
 
 
-
+//eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function GET(req: NextRequest) {
   const identicon = new Identicon('')
   identicon.drawIdenticon();

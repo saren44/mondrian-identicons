@@ -16,10 +16,10 @@ export class Identicon {
   private static BLUE = [3, 0, 173, 255]
 
 
-  constructor(text: string, options?: any) {
+  constructor(text: string) {
     this._img = new Image(128, 128)
     this._hash = sha512.array(text)
-    this._partitions = new Array();
+    this._partitions = [];
     for (let i = 0; i < 8; i += 1) {
       this._partitions.push(new Array(8).fill(-1))
     }

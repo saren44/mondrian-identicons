@@ -1,15 +1,6 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import { NextRequest, NextResponse } from "next/server";
-import { generateIdenticon } from "../generate";
-import { Identicon } from "../identicon";
 
-type ResponseData = {
-  title: string;
-  devName: string;
-  devId: string;
-  gameId: string;
-  data?: Array<string>;
-};
+import { NextRequest, NextResponse } from "next/server";
+import { Identicon } from "../identicon";
 
 export function GET(
   req: NextRequest,
