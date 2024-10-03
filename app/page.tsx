@@ -3,8 +3,7 @@
 import { names } from "@/const/names";
 import { CheckOutlined, CopyOutlined, LoadingOutlined, ReloadOutlined } from "@ant-design/icons";
 import { Button, ConfigProvider, Input, Skeleton, Space } from "antd";
-import SkeletonImage from "antd/es/skeleton/Image";
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function Home() {
   const [name, setname] = useState('Johnny')
