@@ -9,11 +9,11 @@ export class Identicon {
   private _partitions: Array< Array<number>>
   private _colorMaps: Map<number, Array<number>>
 
-  private static BLACK = [0, 0, 0, 255]
-  private static WHITE = [255, 255, 255, 255]
-  private static RED = [255, 0, 0, 255]
-  private static YELLOW = [255, 255, 0, 255]
-  private static BLUE = [0, 0, 255, 255]
+  private static BLACK = [5, 1, 3, 255]
+  private static WHITE = [234, 239, 233, 255]
+  private static RED = [231, 5, 3, 255]
+  private static YELLOW = [253, 222, 6, 255]
+  private static BLUE = [3, 0, 173, 255]
 
 
   constructor(text: string, options?: any) {
@@ -43,9 +43,10 @@ export class Identicon {
       this._partitions[4][4] = 0
     }
 
+    //aosdoaisd8hi2hiua98
     while (this._partitions.some(el => el.some(el => el === -1))) {
-      const widthData = this._hash[dataIndex]
-      const heightData = this._hash[dataIndex + 1]
+      const widthData = this._hash[dataIndex % 64]
+      const heightData = this._hash[(dataIndex + 1) % 64 ]
       let pos = -1
       let row = -1
       while (pos === -1) {
@@ -57,6 +58,7 @@ export class Identicon {
   
       const newRectPossibleWidth = Math.floor(widthData / 100) + 1
       const newRectPossibleHeight = Math.floor(heightData / 100) + 1
+      //console.log(newRectPossibleHeight, newRectPossibleWidth, dataIndex)
       const availabilityGrid = new Array(newRectPossibleWidth).fill(new Array(newRectPossibleHeight).fill(true))
       let falseColumn = 999
       for (let i = 0; i < newRectPossibleWidth; i += 1) {
@@ -122,7 +124,7 @@ export class Identicon {
             this._colorMaps.set(this._partitions[i][j] + 1, color)
           }
         }
-        console.log(color)
+        //console.log(color)
         //const color2 = [255, 255, 0, 255]
         let vertical = false;
         let horizontal = false;

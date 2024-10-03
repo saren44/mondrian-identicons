@@ -19,7 +19,7 @@ function getRectangles(data: Array<number>) {
       console.log(JSON.stringify(row))
     }
     console.log()
-  }
+  } 
 
   while (res.some(el => el.some(el => el === -1))) {
     const widthData = data[dataIndex]
