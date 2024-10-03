@@ -1,8 +1,8 @@
 'use client'
 
 import { names } from "@/const/names";
-import { LoadingOutlined, ReloadOutlined, RetweetOutlined } from "@ant-design/icons";
-import { Button, Input, Modal, Space } from "antd";
+import { CheckOutlined, CopyOutlined, LoadingOutlined, ReloadOutlined, RetweetOutlined } from "@ant-design/icons";
+import { Button, ConfigProvider, Input, Modal, Space } from "antd";
 import Paragraph from "antd/es/typography/Paragraph";
 import Title from "antd/es/typography/Title";
 import Image from "next/image";
@@ -10,17 +10,33 @@ import { Suspense, useCallback, useEffect, useState } from "react";
 
 export default function Home() {
   const [name, setname] = useState('Johnny')
-  const [bugModal, setBugModal] = useState(false);
+  const [textCopied, setTextCopied] = useState(false)
 
   const getRandomName = () => {
     setname(names[Math.floor(Math.random() * names.length)])
   }
 
-  const openBugModal = useCallback(() => setBugModal(true), [])
+  const handleClickCopyButton = () => {
+    navigator.clipboard.writeText(`${window.location}api/${name}`); 
+    setTextCopied(true)
+  }
 
+  useEffect(() => {
+    setTextCopied(false)
+  }, [name])
 
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] select-none">
+    <ConfigProvider
+      theme={{
+        token: {
+          // Seed Token
+          colorPrimary: '#0300AD',
+        },
+      }}
+    >
+
+    
+    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pt-16 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] select-none">
       <header>
         <h1 className="text-4xl">Mondrianticons</h1>
         <p> A weird cross-over between 
@@ -38,13 +54,21 @@ export default function Home() {
       </header>
       <main className="flex flex-col gap-8 row-start-2 items-center">
         <Suspense fallback={<LoadingOutlined spin/>}>
-          <img src={`http://localhost:3000/api/${name}`} width={128}/>
-        </Suspense>
-
-           <code className="w-auto select-text">
-              {`<img \n\tsrc="http://localhost:3000/api/${name}"\n/>`}
+          <img src={`${window.location}api/${name}`} width={128}/>
+        </Suspense> 
+          <Space>
+            <code className="w-auto select-text">
+              {`<img \n\tsrc="${window.location}api/${name}"\n/>`}
             </code>
-          <p> Edit the text below and see the magic happen! </p>
+            <Button 
+              icon={textCopied ? <CheckOutlined/> : <CopyOutlined />} 
+              shape='default' 
+              className="ml-4"
+              onClick={handleClickCopyButton}
+            />
+          </Space>
+
+          <p> Edit text below and see your name Mondrianized! </p>
           <Input.Search 
             value={name} 
             onChange={e => setname(e.target.value)} 
@@ -56,8 +80,9 @@ export default function Home() {
           
       </main>
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <p> Made in a couple rainy autumn evenings by <a href="https://github.com/saren44" target="_blank" className="underline"> saren44 </a> </p>
+        <p> Made in a couple of rainy autumn evenings by <a href="https://github.com/saren44" target="_blank" className="underline"> saren44 </a> </p>
       </footer>
     </div>
+    </ConfigProvider>
   );
 }

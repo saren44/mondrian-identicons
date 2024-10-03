@@ -100,7 +100,8 @@ export class Identicon {
     const COLORS = [
       Identicon.RED,
       Identicon.BLUE,
-      Identicon.YELLOW
+      Identicon.YELLOW,
+      Identicon.BLACK,
     ]
 
     for (let i = 0; i < 8; i += 1) {
@@ -109,7 +110,7 @@ export class Identicon {
         let color = this._colorMaps.get(this._partitions[i][j])
         if (!color) {
           const selection = this._hash[(i * 8) + j]
-          if (selection < 128) {
+          if (selection < 169   ) {
             color = Identicon.WHITE
           }
           else {
